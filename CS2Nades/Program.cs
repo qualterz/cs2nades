@@ -23,7 +23,18 @@ if (!File.Exists(path))
 var results = Channel.CreateUnbounded<Result>();
 var demo = new DemoParser();
 
+var lastGrenadeOwnerLineup = new Dictionary<CCSPlayerPawn, ThrowLineup>();
 var projectileTemporalData = new Dictionary<CBaseCSGrenadeProjectile, (ThrowLineup, Timing)>();
+
+demo.EntityEvents.CBaseCSGrenade.PostUpdate += e =>
+{
+    if (e.NextHoldTick == default) return;
+
+    if (e.OwnerEntity is CCSPlayerPawn pawn)
+    {
+        lastGrenadeOwnerLineup[pawn] = new ThrowLineup(pawn.Origin, pawn.EyeAngles, pawn.InputButtons);
+    }
+};
 
 demo.EntityEvents.CBaseCSGrenadeProjectile.Create += e =>
 {
@@ -31,7 +42,9 @@ demo.EntityEvents.CBaseCSGrenadeProjectile.Create += e =>
 
     if (pawn == null) return;
 
-    var lineup = new ThrowLineup(pawn.Origin, pawn.EyeAngles, pawn.InputButtons);
+    var lineup = lastGrenadeOwnerLineup.GetValueOrDefault(pawn);
+
+    if (lineup == null) return;
 
     projectileTemporalData.TryAdd(e, (lineup, new(demo.CurrentGameTick, demo.CurrentGameTime)));
 };
