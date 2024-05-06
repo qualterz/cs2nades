@@ -31,12 +31,7 @@ demo.EntityEvents.CBaseCSGrenadeProjectile.Create += e =>
 
     if (pawn == null) return;
 
-    var velocity = new Vector(
-        pawn.Velocity.X,
-        pawn.Velocity.Y,
-        pawn.Velocity.Z);
-
-    var lineup = new ThrowLineup(pawn.Origin, velocity, pawn.EyeAngles, pawn.InputButtons);
+    var lineup = new ThrowLineup(pawn.Origin, pawn.EyeAngles, pawn.InputButtons);
 
     projectileTemporalData.TryAdd(e, (lineup, new(demo.CurrentGameTick, demo.CurrentGameTime)));
 };
@@ -110,12 +105,7 @@ await foreach (var nade in results.Reader.ReadAllAsync())
     Console.Out.WriteLine(JsonSerializer.Serialize(nade, jsonOptions));
 }
 
-record ThrowLineup(
-    Vector Origin,
-    Vector Velocity,
-    QAngle Angle,
-    InputButtons Buttons);
-
+record ThrowLineup(Vector Origin, QAngle Angle, InputButtons Buttons);
 record Nade(string Name, ThrowLineup Lineup, Vector Origin);
 record Timing(GameTick Tick, GameTime Time);
 record Timings(Timing Throw, Timing Expire);
