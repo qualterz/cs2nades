@@ -2,6 +2,7 @@
 using DemoFile;
 using CS2Nades.Console.JsonConverters;
 using CS2Nades.Common;
+using CS2Nades.Console.Extensions;
 
 var pathArgument = args.SingleOrDefault();
 
@@ -28,9 +29,24 @@ jsonOptions.Converters.Add(new InputButtonsJsonConverter());
 jsonOptions.Converters.Add(new GameTickJsonConverter());
 jsonOptions.Converters.Add(new GameTimeJsonConverter());
 
-nadesHandler.OnResult += nade =>
+nadesHandler.OnThrowNade += thrownNade =>
 {
-    Console.Out.WriteLine(JsonSerializer.Serialize(nade, jsonOptions));
+    var player = demoParser.GetPlayerBySteamId(thrownNade.Thrower.SteamId);
+    var nickname = player?.PlayerName;
+    var place = player?.PlayerPawn?.LastPlaceName;
+
+    Console.Out.WriteLine(JsonSerializer.Serialize(new
+    {
+        Nade = thrownNade.Nade,
+        Thrower = new
+        {
+            SteamId = thrownNade.Thrower.SteamId,
+            Nickname = nickname,
+        },
+        ThrowPlace = place,
+        Timings = thrownNade.Timings,
+        Console = thrownNade.ToConsoleString()
+    }, jsonOptions));
 };
 
 try

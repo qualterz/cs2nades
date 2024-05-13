@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using DemoFile;
+﻿using DemoFile;
 using DemoFile.Sdk;
 
 namespace CS2Nades.Common;
@@ -9,7 +8,7 @@ public class NadesHandler
     private readonly Dictionary<CCSPlayerPawn, ThrowLineup> lastGrenadeOwnerLineup = [];
     private readonly Dictionary<CBaseCSGrenadeProjectile, (ThrowLineup, Timing)> projectileTemporalData = [];
 
-    public Action<Result>? OnResult;
+    public Action<ThrownNade>? OnThrowNade;
 
     public NadesHandler(DemoParser demoParser)
     {
@@ -54,30 +53,14 @@ public class NadesHandler
                 e.Origin);
 
             var expireTiming = new Timing(demoParser.CurrentGameTick, demoParser.CurrentGameTime);
-
             var timings = new Timings(throwTiming!, expireTiming);
-
-            var throwerName = e.Thrower?.Controller?.PlayerName;
             var throwerId = e.Thrower?.Controller?.SteamID;
+            var thrower = new Thrower(throwerId ?? default);
 
-            var thrower = new Thrower(throwerName, throwerId);
-
-            var throwerPlace = e.Thrower?.LastPlaceName;
-
-            var pos = nade.Lineup.Origin;
-            var ang = nade.Lineup.Angle;
-
-            var setpos = $"setpos {pos.X} {pos.Y} {pos.Z}";
-            var setang = $"setang {ang.Pitch} {ang.Yaw} {ang.Roll}";
-
-            var console = $"{setpos}; {setang}";
-
-            OnResult?.Invoke(new(
+            OnThrowNade?.Invoke(new(
                 Thrower: thrower,
-                From: throwerPlace,
                 Timings: timings,
-                Nade: nade,
-                Console: console));
+                Nade: nade));
         };
     }
 }
@@ -86,5 +69,5 @@ public record ThrowLineup(Vector Position, QAngle Angle, InputButtons Buttons);
 public record Nade(string Name, ThrowLineup Lineup, Vector Destination);
 public record Timing(GameTick Tick, GameTime Time);
 public record Timings(Timing Throw, Timing Expire);
-public record Thrower(string? Name, ulong? SteamId);
-public record Result(Nade Nade, Thrower Thrower, string? From, Timings Timings, string Console);
+public record Thrower(ulong SteamId);
+public record ThrownNade(Nade Nade, Thrower Thrower, Timings Timings);
