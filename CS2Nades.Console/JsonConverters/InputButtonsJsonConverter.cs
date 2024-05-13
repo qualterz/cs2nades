@@ -2,7 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using DemoFile.Sdk;
 
-namespace CS2Nades.JsonConverters;
+namespace CS2Nades.Console.JsonConverters;
 
 public class InputButtonsJsonConverter : JsonConverter<InputButtons>
 {

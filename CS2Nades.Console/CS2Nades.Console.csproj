@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DemoFile" Version="0.12.2" />
+    <ProjectReference Include="..\CS2Nades.Common\CS2Nades.Common.csproj" />
   </ItemGroup>
 
 </Project>

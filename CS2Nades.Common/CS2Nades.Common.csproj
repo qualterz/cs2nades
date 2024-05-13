@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DemoFile" Version="0.12.2" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>CS2Nades.Common</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Qualterz</Authors>
+  </PropertyGroup>
+
+</Project>

@@ -2,7 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using DemoFile;
 
-namespace CS2Nades.JsonConverters;
+namespace CS2Nades.Console.JsonConverters;
 
 public class GameTickJsonConverter : JsonConverter<GameTick>
 {
