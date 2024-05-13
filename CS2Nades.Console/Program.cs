@@ -31,7 +31,7 @@ jsonOptions.Converters.Add(new GameTimeJsonConverter());
 
 nadesHandler.OnThrownNade += thrownNade =>
 {
-    var player = demoParser.GetPlayerBySteamId(thrownNade.Thrower.SteamId);
+    var player = demoParser.GetPlayerBySteamId(thrownNade.ThrowerId);
     var nickname = player?.PlayerName;
     var place = player?.PlayerPawn?.LastPlaceName;
 
@@ -40,7 +40,7 @@ nadesHandler.OnThrownNade += thrownNade =>
         Nade = thrownNade.Nade,
         Thrower = new
         {
-            SteamId = thrownNade.Thrower.SteamId,
+            SteamId = thrownNade.ThrowerId,
             Nickname = nickname,
         },
         ThrowPlace = place,

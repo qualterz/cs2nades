@@ -55,10 +55,9 @@ public class NadesHandler
             var expireTiming = new Timing(demoParser.CurrentGameTick, demoParser.CurrentGameTime);
             var timings = new Timings(throwTiming!, expireTiming);
             var throwerId = e.Thrower?.Controller?.SteamID;
-            var thrower = new Thrower(throwerId ?? default);
 
             OnThrownNade?.Invoke(new(
-                Thrower: thrower,
+                ThrowerId: throwerId ?? default,
                 Timings: timings,
                 Nade: nade));
         };
@@ -69,5 +68,4 @@ public record ThrowLineup(Vector Position, QAngle Angle, InputButtons Buttons);
 public record Nade(string Name, ThrowLineup Lineup, Vector Destination);
 public record Timing(GameTick Tick, GameTime Time);
 public record Timings(Timing Throw, Timing Expire);
-public record Thrower(ulong SteamId);
-public record ThrownNade(Nade Nade, Thrower Thrower, Timings Timings);
+public record ThrownNade(Nade Nade, Timings Timings, ulong ThrowerId);
