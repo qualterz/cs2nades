@@ -8,7 +8,7 @@ public class NadesHandler
     private readonly Dictionary<CCSPlayerPawn, ThrowLineup> lastGrenadeOwnerLineup = [];
     private readonly Dictionary<CBaseCSGrenadeProjectile, (ThrowLineup, Timing)> projectileTemporalData = [];
 
-    public Action<ThrownNade>? OnThrowNade;
+    public Action<ThrownNade>? OnThrownNade;
 
     public NadesHandler(DemoParser demoParser)
     {
@@ -57,7 +57,7 @@ public class NadesHandler
             var throwerId = e.Thrower?.Controller?.SteamID;
             var thrower = new Thrower(throwerId ?? default);
 
-            OnThrowNade?.Invoke(new(
+            OnThrownNade?.Invoke(new(
                 Thrower: thrower,
                 Timings: timings,
                 Nade: nade));

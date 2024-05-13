@@ -29,7 +29,7 @@ jsonOptions.Converters.Add(new InputButtonsJsonConverter());
 jsonOptions.Converters.Add(new GameTickJsonConverter());
 jsonOptions.Converters.Add(new GameTimeJsonConverter());
 
-nadesHandler.OnThrowNade += thrownNade =>
+nadesHandler.OnThrownNade += thrownNade =>
 {
     var player = demoParser.GetPlayerBySteamId(thrownNade.Thrower.SteamId);
     var nickname = player?.PlayerName;
