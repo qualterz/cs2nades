@@ -82,8 +82,8 @@ public class NadesHandler
     }
 }
 
-public record ThrowLineup(Vector Origin, QAngle Angle, InputButtons Buttons);
-public record Nade(string Name, ThrowLineup Lineup, Vector Origin);
+public record ThrowLineup(Vector Position, QAngle Angle, InputButtons Buttons);
+public record Nade(string Name, ThrowLineup Lineup, Vector Destination);
 public record Timing(GameTick Tick, GameTime Time);
 public record Timings(Timing Throw, Timing Expire);
 public record Thrower(string? Name, ulong? SteamId);
